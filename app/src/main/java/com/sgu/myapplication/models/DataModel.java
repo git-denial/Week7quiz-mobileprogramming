@@ -5,9 +5,9 @@ import android.widget.ImageView;
 public class DataModel {
     private String firstName;
     private String lastName;
-    private String img;
+    private ImageView img;
 
-    public DataModel(String firstName, String description, String img) {
+    public DataModel(String firstName, String description, ImageView img) {
         this.firstName = firstName;
         this.lastName = description;
         this.img = img;
@@ -29,7 +29,11 @@ public class DataModel {
         this.lastName = lastName;
     }
 
-    public String getImg(){ return img;}
+    public ImageView getImg(){ return img;}
 
-    public void setImg(String img){this.img = img;}
+    public void setImg(ImageView img){this.img = img;}
+
+    public void updateVolley(){
+
+    }
 }
