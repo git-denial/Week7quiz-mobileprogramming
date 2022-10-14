@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 myIntent.putExtras(bundle);
                 startActivity(myIntent);
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Wrong Credentials",Toast.LENGTH_SHORT).show();
 
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         register.setOnClickListener(view ->{
-
             Intent myIntent = new Intent(this, RegisterActivity.class);
             startActivity(myIntent);
         });

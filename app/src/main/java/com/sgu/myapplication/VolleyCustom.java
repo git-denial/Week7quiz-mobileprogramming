@@ -29,11 +29,12 @@ public class VolleyCustom {
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
     private static Context ctx;
-    private Gson gson = new Gson();
+    private static ListActivity la;
 
-    private VolleyCustom(Context context) {
+    private VolleyCustom(Context context, ListActivity lx) {
         ctx = context;
         requestQueue = getRequestQueue();
+        la = lx;
 
         imageLoader = new ImageLoader(requestQueue,
                 new ImageLoader.ImageCache() {
@@ -52,9 +53,9 @@ public class VolleyCustom {
                 });
     }
 
-    public static synchronized VolleyCustom getInstance(Context context) {
+    public static synchronized VolleyCustom getInstance(Context context, ListActivity la) {
         if (instance == null) {
-            instance = new VolleyCustom(context);
+            instance = new VolleyCustom(context,la);
         }
         return instance;
     }
@@ -120,11 +121,13 @@ public class VolleyCustom {
                                     ImageView ava = new ImageView(ctx);
                                     dataModels.add(new DataModel(o.getString("first_name"), o.getString("last_name"), ava));
                                     getImgReq(o.getString("avatar"),ava, dataModels.get(dataModels.size() - 1));
+
                                 }
                                 catch (JSONException e){
                                     System.out.println(e.toString());
                                 }
                             }
+                            la.prepareListView();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -147,7 +150,12 @@ public class VolleyCustom {
                     @Override
                     public void onResponse(Bitmap response) {
                         mImageView.setImageBitmap(response);
+
+
                         d.setImg(mImageView);
+
+                        la.prepareListView();
+
                     }
                 }, 0, 0, ImageView.ScaleType.FIT_XY, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override

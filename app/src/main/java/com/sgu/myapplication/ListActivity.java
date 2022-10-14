@@ -4,6 +4,7 @@ import android.app.Application;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,30 +25,31 @@ import com.sgu.myapplication.models.DataModel;
 import java.util.ArrayList;
 
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity{
 
     ArrayList<DataModel> dataModels = new ArrayList<>();
     private static final String TAG = "Daquiz";
     private String url = "https://reqres.in/api/users";
 
 
-
-
-
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        VolleyCustom vreq = VolleyCustom.getInstance(ListActivity.this);
+        VolleyCustom vreq = VolleyCustom.getInstance(ListActivity.this, this);
 
         vreq.getJSONReq(url, dataModels);
 
-        prepareListView();
+
+        //prepareListView();
+
+
+
     }
 
 
 
-    private void prepareListView() {
+    public void prepareListView() {
         RecyclerView rv = findViewById(R.id.list_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         DataModelAdapter dataModelAdapter = new DataModelAdapter(dataModels);
@@ -82,7 +85,22 @@ class DataModelAdapter extends RecyclerView.Adapter<DataModelViewHolder> {
 
         holder.titleText.setText(model.getFirstName());
         holder.descriptionText.setText(model.getLastName());
-        holder.avatar.setImageBitmap(((BitmapDrawable)model.getImg().getDrawable()).getBitmap());
+
+        ImageView zeimage = model.getImg();
+
+        zeimage.setOnClickListener( view -> {
+
+System.out.println("RAAAAAAAAAAAAI");
+//                                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+//                                startActivity(intent);
+
+        });
+
+
+        if(zeimage.getDrawable() != null) {
+
+            holder.avatar.setImageBitmap(((BitmapDrawable)model.getImg().getDrawable()).getBitmap());
+        }
 
         System.out.println("HOOOOOOOOOOO");
         System.out.println(model.getImg().toString());
@@ -108,6 +126,5 @@ class DataModelViewHolder extends RecyclerView.ViewHolder {
         titleText = itemView.findViewById(R.id.title_text);
         descriptionText = itemView.findViewById(R.id.description_text);
         avatar = itemView.findViewById(R.id.img);
-        System.out.print("llllllllllllllllllll");
     }
 }
