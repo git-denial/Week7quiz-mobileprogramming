@@ -1,7 +1,5 @@
 package com.sgu.myapplication;
 
-import android.app.Application;
-
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.sgu.myapplication.models.DataModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -34,8 +32,10 @@ public class ListActivity extends AppCompatActivity{
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setTitle("Users list");
+        setContentView(R.layout.userlist);
         VolleyCustom vreq = VolleyCustom.getInstance(ListActivity.this, this);
 
         vreq.getJSONReq(url, dataModels);
@@ -88,18 +88,24 @@ class DataModelAdapter extends RecyclerView.Adapter<DataModelViewHolder> {
 
         ImageView zeimage = model.getImg();
 
-        zeimage.setOnClickListener( view -> {
-
-System.out.println("RAAAAAAAAAAAAI");
-//                                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-//                                startActivity(intent);
-
-        });
-
 
         if(zeimage.getDrawable() != null) {
 
             holder.avatar.setImageBitmap(((BitmapDrawable)model.getImg().getDrawable()).getBitmap());
+            holder.avatar.setOnClickListener(view -> {
+
+                Context dacontex = holder.itemView.getContext();
+
+                Intent myIntent = new Intent(dacontex, DetailActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", model.getId()+"");
+                bundle.putString("imgurl", model.getImgurl());
+
+                myIntent.putExtras(bundle);
+                dacontex.startActivity(myIntent);
+
+            });
         }
 
         System.out.println("HOOOOOOOOOOO");

@@ -119,7 +119,13 @@ public class VolleyCustom {
 
                                     JSONObject o = rawjson.getJSONObject(i);
                                     ImageView ava = new ImageView(ctx);
-                                    dataModels.add(new DataModel(o.getString("first_name"), o.getString("last_name"), ava));
+                                    dataModels.add(new DataModel(
+                                            o.getInt("id"),
+                                            o.getString("email"),
+                                            o.getString("first_name"),
+                                            o.getString("last_name"),
+                                            o.getString("avatar"),
+                                            ava));
                                     getImgReq(o.getString("avatar"),ava, dataModels.get(dataModels.size() - 1));
 
                                 }
